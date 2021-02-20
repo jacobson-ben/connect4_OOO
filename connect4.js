@@ -6,12 +6,13 @@
  */
 
 class Game {
-  constructor(HEIGHT, WIDTH) {
+  constructor(p1, p2, HEIGHT = 6, WIDTH = 7) {
+    this.players = [p1, p2];
     this.HEIGHT = HEIGHT;
     this.WIDTH = WIDTH;
     this.makeBoard();
     this.makeHtmlBoard();
-    this.currPlayer = 1;
+    this.currPlayer = p1;
   }
 
   makeBoard() {
@@ -68,8 +69,9 @@ class Game {
   placeInTable(y, x) {
     const piece = document.createElement("div");
     piece.classList.add("piece");
-    piece.classList.add(`p${this.currPlayer}`);
+    //piece.classList.add(`p${this.currPlayer}`);
     piece.style.top = -50 * (y + 2);
+    piece.style.backgroundColor = this.currPlayer.color;
 
     const spot = document.getElementById(`${y}-${x}`);
     spot.append(piece);
@@ -79,9 +81,8 @@ class Game {
 
   endGame(msg) {
     let game = document.getElementById("board");
-    setTimeout(() => game.innerHTML = '',1000)
-    setTimeout(() => alert(msg),500);
-    
+    setTimeout(() => (game.innerHTML = ""), 1000);
+    setTimeout(() => alert(msg), 500);
   }
   /** handleClick: handle click of column top to play piece */
 
@@ -110,7 +111,8 @@ class Game {
     }
 
     // switch players
-    this.currPlayer = this.currPlayer === 1 ? 2 : 1;
+    this.currPlayer =
+      this.currPlayer === this.players[0] ? this.players[1] : this.players[0];
   }
   /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
@@ -172,8 +174,14 @@ class Game {
 let button = document.getElementById("button");
 button.addEventListener("click", () => {
   let game = document.getElementById("board");
-  game.innerHTML = '';
-  new Game(6, 7);
+  game.innerHTML = "";
+  let p1 = new Player(document.getElementById("p1").value);
+  let p2 = new Player(document.getElementById("p2").value);
+  new Game(p1, p2);
 });
 
-
+class Player {
+  constructor(color) {
+    this.color = color;
+  }
+}
