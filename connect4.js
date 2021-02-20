@@ -78,7 +78,10 @@ class Game {
   /** endGame: announce game end */
 
   endGame(msg) {
-    alert(msg);
+    let game = document.getElementById("board");
+    setTimeout(() => game.innerHTML = '',1000)
+    setTimeout(() => alert(msg),500);
+    
   }
   /** handleClick: handle click of column top to play piece */
 
@@ -166,4 +169,11 @@ class Game {
   }
 }
 
-new Game(6, 7);
+let button = document.getElementById("button");
+button.addEventListener("click", () => {
+  let game = document.getElementById("board");
+  game.innerHTML = '';
+  new Game(6, 7);
+});
+
+
